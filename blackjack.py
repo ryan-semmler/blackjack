@@ -95,14 +95,18 @@ def show_table_end_game(player, dealer):
 
 def player_turn(deck, player, dealer, top_card_index):
     player_choice = 'h'
+    if player.hand_total == 21:
+        input("You got 21!")
     while player_choice == 'h' and player.hand_total < 21:
         show_table_in_game(player, dealer)
         player_choice = input("Hit or stand? ")[0].lower()
         if player_choice == 'h':
+            os.system('clear')
             player.hand_cards.append(deck.card_list[top_card_index])
             player.update_hand_total()
+            if player.hand_total == 21:
+                input("You got 21!")
             top_card_index += 1
-        os.system('clear')
 
 
 def dealer_turn(deck, dealer, top_card_index):
@@ -133,6 +137,9 @@ def game(deck, player, dealer):
     dealer.visible_cards = dealer.hand_cards[1:]
     dealer.update_visible_total()
     player.update_hand_total()
+    if player.hand_total == 21:
+        print("Blackjack!")
+        return True
     top_card_index = 4
     player_turn(deck, player, dealer, top_card_index)
     if player.hand_total > 21:
@@ -156,6 +163,7 @@ def main():
         player.hand_cards = []
         deck = Deck(create_deck())
         deck.shuffle_deck()
+        os.system('clear')
         print("You have ${} left.".format(player.money))
         bet = get_bet(player)
         if game(deck, player, dealer):
