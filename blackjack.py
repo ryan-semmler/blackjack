@@ -95,9 +95,10 @@ def show_table_end_game(player, dealer):
 
 def player_turn(deck, player, dealer, top_card_index):
     player_choice = 'h'
-    if player.hand_total == 21:
-        input("You got 21!")
-    while player_choice == 'h' and player.hand_total < 21:
+    while player_choice == 'h' and player.hand_total <= 21:
+        if player.hand_total == 21:
+            input("You got 21!")
+            break
         show_table_in_game(player, dealer)
         player_choice = input("Hit or stand? ")[0].lower()
         if player_choice == 'h':
@@ -173,7 +174,10 @@ def main():
             print("Dealer wins.")
             player.money -= bet
         show_table_end_game(player, dealer)
-        if input("Play again? ")[0].lower() != 'y':
+        again = input("Play again? ")
+        if again == '':
+            play_again = False
+        elif again[0].lower() != 'y':
             play_again = False
 
 
